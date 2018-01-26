@@ -1,0 +1,23 @@
+{
+  "name": "som-server",
+  "version": "1.0.0",
+  "description": "Store Order Management(SOM) Application for store supplies.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vkouk/som-app.git"
+  },
+  "author": "Vasilis Koukoutis",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "nodemon": "^1.14.11",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}
