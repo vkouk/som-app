@@ -14,8 +14,11 @@
   "author": "Vasilis Koukoutis",
   "license": "ISC",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.2",
+    "cookie-session": "^2.0.0-beta.3",
     "express": "^4.16.2",
+    "mysql": "^2.15.0",
     "nodemon": "^1.14.11",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0"
