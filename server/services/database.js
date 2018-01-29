@@ -19,8 +19,9 @@ class Database {
         this.connection.connect((err) => {
             if (err) {
                 console.log('Error found: ', err);
+                this.closeConnection();
             }
-            console.log("Connected!");
+            console.log("Database Connected!");
         });
     }
 
@@ -42,7 +43,7 @@ class Database {
                     return reject( err );
                 resolve();
             } );
-            console.log("Disconnected!");
+            console.log("Database Disconnected!");
         } );
     }
 }
