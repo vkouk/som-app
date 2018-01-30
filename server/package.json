@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Store Order Management(SOM) Application for store supplies.",
   "main": "index.js",
+  "engines": {
+    "node": "8.9.4",
+    "npm": "5.6.0"
+  },
   "scripts": {
     "start": "node index.js",
     "server": "nodemon index.js"
