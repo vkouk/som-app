@@ -32,8 +32,7 @@ class Database {
                     return reject( err );
                 resolve( rows );
             } );
-            this.closeConnection();
-        } );
+        }, this.closeConnection() );
     }
 
     closeConnection() {
