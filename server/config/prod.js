@@ -5,5 +5,6 @@ module.exports = {
         password : process.env.DB_PASSWORD,
         database : process.env.DB_DATABASE,
         port     : process.env.DB_PORT
-    }
+    },
+    cookieKey: process.env.COOKIE_KEY
 };

@@ -1,6 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const passport = require('passport');
+const bodyParser = require('body-parser');
+const cookieSession = require('cookie-session');
 const knex = require('knex');
 const keys = require('./config/keys');
 require('./services/passport');
@@ -8,6 +9,12 @@ require('./services/passport');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(
+    cookieSession({
+        maxAge: 1 * 24 * 60 * 60 * 1000,
+        keys: [keys.cookieKey]
+    })
+);
 app.use((req, res, next) => {
     req.db = knex({
         client: 'mysql',
