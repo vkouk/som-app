@@ -1,15 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const Database = require('./services/database');
+const knex = require('knex');
 require('./services/passport');
 
 const app = express();
-const database = new Database();
 
 app.use(bodyParser.json());
 app.use((req, res, next) => {
-    req.db = database;
+    req.db = knex({
+        client: 'mysql',
+        connection: {
+            host : 'sql2.freemysqlhosting.net',
+            user : 'sql2218708',
+            password : 'fQ5*yJ5%',
+            database : 'sql2218708',
+            port     : '3306'
+        }
+    });
 
     next();
 });

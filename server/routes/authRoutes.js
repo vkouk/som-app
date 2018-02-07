@@ -6,7 +6,8 @@ module.exports = app => {
     }));
 
     app.post('/api/register', passport.authenticate('local-register', {
-        failureFlash: true
+        successRedirect: '/',
+        failureRedirect: '/login'
     }));
 
     app.get('/api/logout', (req, res) => {
