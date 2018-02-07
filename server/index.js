@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const knex = require('knex');
+const keys = require('./config/keys');
 require('./services/passport');
 
 const app = express();
@@ -11,11 +12,11 @@ app.use((req, res, next) => {
     req.db = knex({
         client: 'mysql',
         connection: {
-            host : 'sql2.freemysqlhosting.net',
-            user : 'sql2218708',
-            password : 'fQ5*yJ5%',
-            database : 'sql2218708',
-            port     : '3306'
+            host : keys.database.host,
+            user : keys.database.user,
+            password : keys.database.password,
+            database : keys.database.database,
+            port     : keys.database.port
         }
     });
 
