@@ -2,33 +2,23 @@ const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-const knex = require('knex');
+const mongoose = require('mongoose');
 const keys = require('./config/keys');
+require('./models/Users');
 require('./services/passport');
+
+mongoose.Promise = global.Promise;
+mongoose.connect(keys.mongoURI);
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(
     cookieSession({
-        maxAge: 1 * 24 * 60 * 60 * 1000,
+        maxAge: 5 * 24 * 60 * 60 * 1000,
         keys: [keys.cookieKey]
     })
 );
-app.use((req, res, next) => {
-    req.db = knex({
-        client: 'mysql',
-        connection: {
-            host : keys.database.host,
-            user : keys.database.user,
-            password : keys.database.password,
-            database : keys.database.database,
-            port     : keys.database.port
-        }
-    });
-
-    next();
-});
 app.use(passport.initialize());
 app.use(passport.session());
 
