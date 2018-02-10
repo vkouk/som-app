@@ -45,12 +45,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.client",
+    package = "com.somapp",
 )
 
 android_resource(
     name = "res",
-    package = "com.client",
+    package = "com.somapp",
     res = "src/main/res",
 )
 

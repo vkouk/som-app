@@ -1,4 +1,4 @@
-package com.client;
+package com.somapp;
 
 import android.app.Application;
 
