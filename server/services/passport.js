@@ -22,9 +22,10 @@ passport.use('local-login',
             passwordField: 'password'
         },
         (email, password, done) => {
-            User.findOne({ email }, function (err, user) {
+            User.findOne({ email }, (err, user) => {
                 if (err) { return done(err); }
                 if (!user) { return done(null, false); }
+
                 return done(null, user);
             });
     })
