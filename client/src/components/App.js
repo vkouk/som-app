@@ -1,34 +1,28 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { TabNavigator, StackNavigator } from 'react-navigation';
+import { Provider } from 'react-redux';
+import store from '../store';
+import HomeScreen from '../screens/HomeScreen';
+import AuthScreen from '../screens/AuthScreen';
+import FormScreen from '../screens/FormScreen';
 
 class App extends Component {
   render() {
+      const MainNavigator = TabNavigator({
+          home: { screen: HomeScreen, navigationOptions: { title: 'Home'  } },
+          form: { screen: FormScreen, navigationOptions: { title: 'Form'  } }
+      });
+      const MainScreenNavigator = StackNavigator({
+          auth: { screen: AuthScreen, navigationOptions: { title: 'Register / Login', header: null }  },
+          Tab: { screen: MainNavigator, navigationOptions: { header: null } }
+      });
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to SOM-APP.
-        </Text>
-      </View>
+      <Provider store={store}>
+          <MainScreenNavigator />
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  }
-});
 
 export default App;
