@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
-require('./models/Users');
 require('./services/passport');
 
 mongoose.Promise = global.Promise;

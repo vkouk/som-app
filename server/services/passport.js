@@ -1,8 +1,26 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt-nodejs');
-const User = mongoose.model('users');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+const User = require('../models/Users');
+const keys = require('../config/keys');
+
+const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromHeader('x-auth'),
+    secretOrKey: keys.secret
+};
+
+passport.use(new JwtStrategy(jwtOptions, (payload, done) => {
+    User.findById(payload.sub, (err, user) => {
+        if (err) { return done(err, false); }
+
+        if (user) {
+            done(null, user);
+        } else {
+            done(null, false);
+        }
+    });
+}));
 
 passport.serializeUser((user, done) => {
     done(null, user._id);
@@ -15,38 +33,22 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-passport.use('local-login',
-    new LocalStrategy(
+passport.use(new LocalStrategy(
         {
             usernameField: 'email',
-            passwordField: 'password'
         },
         (email, password, done) => {
             User.findOne({ email }, (err, user) => {
-                if (err) { return done(err); }
-                if (!user) { return done(null, false); }
+               if (err) { return done(err); }
+               if (!user) { return done(null, false); }
 
-                return done(null, user);
+               user.comparePassword(password, (err, isMatch) => {
+                  if (err) { return done(err); }
+                  if (!isMatch) { return done(null, false); }
+
+                  return done(null, user);
+               });
             });
-    })
-);
-
-passport.use('local-register',
-    new LocalStrategy(
-        {
-            usernameField: 'email',
-            passwordField: 'password',
-        },
-        async (email, password, done) => {
-            const hashPassword = bcrypt.hashSync(password);
-            const existingUser = await User.findOne({ email });
-
-            if (existingUser) {
-                return done(null, existingUser);
-            }
-
-            const user = await new User({ email: email, password: hashPassword }).save();
-            done(null, user);
         }
     )
 );
