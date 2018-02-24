@@ -1,35 +1,45 @@
-import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { View, ImageBackground, Dimensions, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { View, ImageBackground, Dimensions, StyleSheet, AsyncStorage } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import { Form, Item, Input, Label, Icon, Button, Text } from 'native-base';
-import { userLogin, userRegister } from '../actions';
+import { loginUser,  registerUser, emailChanged, passwordChanged } from '../actions';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 class AuthScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedIndex: null,
-            error: ''
-        };
-    }
+    state = {
+        selectedIndex: null,
+    };
 
-    componentDidMount() {
-        this.onAuthComplete(this.props);
-    }
+    async componentDidMount() {
+        const token = await AsyncStorage.getItem('token');
 
-    componentWillReceiveProps(nextProps) {
-        this.onAuthComplete(nextProps);
-    }
-
-    onAuthComplete({token}) {
         if (token) {
             this.props.navigation.navigate('home');
         }
     }
+
+    onEmailChange = text => {
+        this.props.emailChanged(text);
+    };
+
+    onPasswordChange = text => {
+        this.props.passwordChanged(text);
+    };
+
+    onRegisterButtonPress = () => {
+      const { email, password } = this.props;
+
+      this.props.registerUser({ email, password });
+    };
+
+    onLoginButtonPress = () => {
+        const { email, password } = this.props;
+
+        this.props.loginUser({ email, password });
+    };
 
     updateIndex = (selectedIndex) => {
         this.setState({selectedIndex})
@@ -42,36 +52,36 @@ class AuthScreen extends Component {
                   <View>
                       <Form style={styles.formWrapper}>
                           <Item floatingLabel>
-                              <Label>Username</Label>
+                              <Label>Email</Label>
                               <Icon active name='ios-contact' style={{ color: 'white' }} />
                               <Input
-
+                                  value={this.props.email}
+                                  onChangeText={this.onEmailChange}
+                                  style={{color: '#fff'}}
                               />
                           </Item>
-                      </Form>
-                      <Form style={styles.formWrapper}>
                           <Item floatingLabel>
                               <Label>Password</Label>
                               <Icon active name='home' style={{ color: 'white' }} />
                               <Input
+                                  value={this.props.password}
+                                  onChangeText={this.onPasswordChange}
+                                  style={{color: '#fff'}}
                                   secureTextEntry
                               />
                           </Item>
                       </Form>
-                      <Form style={styles.formWrapper}>
-                          <Item floatingLabel last>
-                              <Label>Confirm Password</Label>
-                              <Icon active name='home' style={{ color: 'white' }} />
-                              <Input
-                                  secureTextEntry
-                              />
-                          </Item>
-                      </Form>
+
+                      <Text style={styles.errorStyle}>
+                          {this.props.error}
+                      </Text>
+
                       <Button
                           block
                           light
                           style={styles.btnStyle}
-                          onPress={this.props.userRegister}
+                          action="submit"
+                          onPress={this.onRegisterButtonPress}
                       >
                         <Text>Register</Text>
                       </Button>
@@ -82,27 +92,36 @@ class AuthScreen extends Component {
                   <View>
                       <Form style={styles.formWrapper}>
                           <Item floatingLabel>
-                              <Label>Username</Label>
+                              <Label>Email</Label>
                               <Icon active name='ios-contact' style={{ color: 'white' }} />
                               <Input
-
+                                  value={this.props.email}
+                                  onChangeText={this.onEmailChange}
+                                  style={{color: '#fff'}}
                               />
                           </Item>
-                      </Form>
-                      <Form style={styles.formWrapper}>
                           <Item floatingLabel>
                               <Label>Password</Label>
                               <Icon active name='home' style={{ color: 'white' }} />
                               <Input
+                                  value={this.props.password}
+                                  onChangeText={this.onPasswordChange}
+                                  style={{color: '#fff'}}
                                   secureTextEntry
                               />
                           </Item>
                       </Form>
+
+                      <Text style={styles.errorStyle}>
+                          {this.props.error}
+                      </Text>
+
                       <Button
                           block
                           light
                           style={styles.btnStyle}
-                          onPress={this.props.userLogin}
+                          action="submit"
+                          onPress={this.onLoginButtonPress}
                       >
                           <Text>Login</Text>
                       </Button>
@@ -149,19 +168,26 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
     },
     formWrapper: {
-        marginTop: 10,
-        marginBottom: 20,
+        marginTop: 20,
+        marginBottom: 80,
         width: 280,
         height: 80
     },
     btnStyle: {
         marginLeft: 10
+    },
+    errorStyle: {
+        fontSize: 20,
+        alignSelf: 'center',
+        color: 'red',
+        marginBottom: 20
     }
 });
 
-mapStateToProps = ({auth}) => {
-    return {
-        token: auth
-    };
+const mapStateToProps = ({ auth }) => {
+    const { email, password, error } = auth;
+
+    return { email, password, error };
 };
-export default connect(mapStateToProps, { userLogin, userRegister })(AuthScreen);
+
+export default connect(mapStateToProps , { loginUser, registerUser, emailChanged, passwordChanged })(AuthScreen);

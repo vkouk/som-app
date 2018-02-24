@@ -1,4 +1,5 @@
-export const LOGIN_USER = 'login_user';
-export const LOGIN_USER_FAIL = 'login_user_fail';
-export const REGISTER_USER = 'register_user';
-export const REGISTER_USER_FAIL = 'register_user_fail';
+export const AUTH_USER = 'auth_user';
+export const UNAUTH_USER = 'unauth_user';
+export const AUTH_ERROR = 'auth_error';
+export const EMAIL_CHANGED = 'email_changed';
+export const PASSWORD_CHANGED = 'password_changed';

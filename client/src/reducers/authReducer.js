@@ -1,27 +1,29 @@
 import {
-    LOGIN_USER,
-    LOGIN_USER_FAIL,
-    REGISTER_USER,
-    REGISTER_USER_FAIL
+    EMAIL_CHANGED,
+    PASSWORD_CHANGED,
+    AUTH_USER,
+    UNAUTH_USER,
+    AUTH_ERROR
 } from '../actions/types';
 
-// export default (state = {}, action) => {
-//     switch(action.type) {
-//         case LOGIN_USER || REGISTER_USER:
-//             return { token: action.payload };
-//         case LOGIN_USER_FAIL || REGISTER_USER_FAIL:
-//             return { token: null };
-//         default:
-//             return state;
-//     }
-// }
+const initialState = {
+  email: '',
+  password: '',
+  error: ''
+};
 
-export default function(state = {}, action) {
+export default (state = initialState, action) => {
     switch(action.type) {
-        case LOGIN_USER || REGISTER_USER:
-            return { token: action.payload };
-        case LOGIN_USER_FAIL || REGISTER_USER_FAIL:
-            return { token: null };
+        case EMAIL_CHANGED:
+            return { ...state, email: action.payload };
+        case PASSWORD_CHANGED:
+            return { ...state, password: action.payload };
+        case AUTH_USER:
+            return { ...state, error: '' };
+        case UNAUTH_USER:
+            return { ...state, email: '', password: '' };
+        case AUTH_ERROR:
+            return { ...state, error: action.payload };
         default:
             return state;
     }
