@@ -10,7 +10,7 @@ const height = Dimensions.get('window').height;
 
 class AuthScreen extends Component {
     state = {
-        selectedIndex: null,
+        selectedIndex: null
     };
 
     async componentDidMount() {

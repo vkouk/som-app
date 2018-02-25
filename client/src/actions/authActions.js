@@ -1,4 +1,5 @@
 import {
+    FETCH_USER,
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
     AUTH_USER,
@@ -6,6 +7,7 @@ import {
     AUTH_ERROR
 } from './types';
 import { AsyncStorage } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import axios from 'axios';
 
 const ROOT_URL = 'http://localhost:5000';
@@ -24,13 +26,23 @@ export const passwordChanged = text => {
     };
 };
 
+export const fetchUser = () => async dispatch => {
+    const token = await AsyncStorage.getItem('token');
+    const { data } = await axios.get(`${ROOT_URL}/api/current_user`, { headers: { "Authorization" : token  } } );
+
+    dispatch({
+        type: FETCH_USER,
+        payload: data
+    });
+};
+
 export const loginUser = ({email, password}) => async dispatch => {
     await axios.post(`${ROOT_URL}/api/login`, { email, password })
         .then(response => {
             dispatch({ type: AUTH_USER });
             AsyncStorage.setItem('token', response.data.token);
         })
-        .catch(() => dispatch(authError('Invalid email address or password.')));
+        .catch((error) => dispatch(authError(error.response.data.error)));
 };
 
 export const registerUser = ({email, password}) => async dispatch => {
@@ -38,7 +50,7 @@ export const registerUser = ({email, password}) => async dispatch => {
         .then(() => {
             dispatch({ type: AUTH_USER });
         })
-        .catch(() => dispatch(authError('Invalid form credentials')));
+        .catch((error) => dispatch(authError(error.response.data.error)));
 };
 
 export const logoutUser = () => {

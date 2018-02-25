@@ -28,6 +28,6 @@ exports.signup = async(req, res, next) => {
     await user.save(err => {
         if (err) { next(err); }
 
-        return res.send({ token: userToken(user) });
+        res.send({ token: userToken(user) });
     });
 };

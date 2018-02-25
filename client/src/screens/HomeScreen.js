@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { logoutUser } from "../actions";
+import { logoutUser, fetchUser } from "../actions";
 
 import { Button, Text } from 'native-base';
 
 class WelcomeScreen extends Component {
+    componentDidMount() {
+        this.props.fetchUser();
+        console.log(this.props.user);
+    }
+
     onLogoutSubmit = () => {
       this.props.logoutUser();
 
@@ -29,4 +34,10 @@ class WelcomeScreen extends Component {
     }
 }
 
-export default connect(null, { logoutUser })(WelcomeScreen);
+const mapStateToProps = ({ auth }) => {
+  const { user } = auth;
+
+  return { user };
+};
+
+export default connect(mapStateToProps, { logoutUser, fetchUser })(WelcomeScreen);
