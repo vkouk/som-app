@@ -8,7 +8,6 @@ import { Button, Text } from 'native-base';
 class WelcomeScreen extends Component {
     componentDidMount() {
         this.props.fetchUser();
-        console.log(this.props.user);
     }
 
     onLogoutSubmit = () => {

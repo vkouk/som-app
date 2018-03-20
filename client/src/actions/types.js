@@ -4,3 +4,5 @@ export const UNAUTH_USER = 'unauth_user';
 export const AUTH_ERROR = 'auth_error';
 export const EMAIL_CHANGED = 'email_changed';
 export const PASSWORD_CHANGED = 'password_changed';
+
+export const FETCH_SUPPLIES = 'fetch_supplies';

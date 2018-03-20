@@ -7,7 +7,6 @@ import {
     AUTH_ERROR
 } from './types';
 import { AsyncStorage } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 import axios from 'axios';
 
 const ROOT_URL = 'http://localhost:5000';
