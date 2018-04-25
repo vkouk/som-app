@@ -8,7 +8,7 @@ import FormScreen from '../screens/FormScreen';
 
 const MainNavigator = TabNavigator({
     home: { screen: HomeScreen, navigationOptions: { title: 'Home'  } },
-    form: { screen: FormScreen, navigationOptions: { title: 'Form'  } }
+    form: { screen: FormScreen, navigationOptions: { title: 'Supplies Form'  } }
 });
 const MainScreenNavigator = StackNavigator({
     auth: { screen: AuthScreen, navigationOptions: { title: 'Register / Login', header: null }  },
