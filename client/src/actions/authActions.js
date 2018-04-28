@@ -9,7 +9,7 @@ import {
 import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 
-const ROOT_URL = 'http://localhost:5000';
+const ROOT_URL = 'https://localhost:5000';
 
 export const emailChanged = text => {
     return {

@@ -10,7 +10,7 @@ const supplySchema = new Schema({
         default: 0
     },
     _buyer : {
-        type: Schema.Types.ObjectId, ref: 'Users'
+        type: Schema.Types.ObjectId, ref: 'users'
     },
     dateBought: Date
 });
