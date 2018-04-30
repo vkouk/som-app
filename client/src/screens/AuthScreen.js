@@ -38,7 +38,11 @@ class AuthScreen extends Component {
     onLoginButtonPress = () => {
         const { email, password } = this.props;
 
-        this.props.loginUser({ email, password });
+        this.props.loginUser({ email, password }).then(() => {
+            if (!this.props.error && email.length > 0 && password.length > 0) {
+                this.props.navigation.navigate('home');
+            }
+        });
     };
 
     updateIndex = (selectedIndex) => {

@@ -8,7 +8,7 @@
   },
   "proxy": {
     "/api/*": {
-      "target": "https://som-app-server.herokuapp.com"
+      "target": "http://som-app-server.herokuapp.com"
     }
   },
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "babel-jest": "22.2.2",
-    "babel-preset-react-native": "^2.1.0",
+    "babel-preset-react-native": "^4.0.0",
     "jest": "22.2.2",
     "react-test-renderer": "16.2.0"
   },

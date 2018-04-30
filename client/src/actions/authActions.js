@@ -9,7 +9,12 @@ import {
 import { AsyncStorage, Platform } from 'react-native';
 import axios from 'axios';
 
-const ROOT_URL = 'http://127.0.0.1:5000';
+let ROOT_URL = '';
+if (Platform.OS === 'ios') {
+    ROOT_URL = 'http://localhost:5000';
+} else {
+    ROOT_URL = 'http://10.0.2.2:5000';
+}
 
 export const emailChanged = text => {
     return {
@@ -40,9 +45,8 @@ export const loginUser = ({email, password}) => async dispatch => {
         .then(response => {
             dispatch({ type: AUTH_USER });
             AsyncStorage.setItem('token', response.data.token);
-            this.props.navigation.navigate('home');
         })
-        .catch(() => dispatch(authError('login error')));
+        .catch((error) => dispatch(authError(error.response.data.error)));
 };
 
 export const registerUser = ({email, password}) => async dispatch => {
@@ -50,7 +54,7 @@ export const registerUser = ({email, password}) => async dispatch => {
         .then(() => {
             dispatch({ type: AUTH_USER });
         })
-         .catch(() => dispatch(authError('register error')));
+        .catch((error) => dispatch(authError(error.response.data.error)));
 };
 
 export const logoutUser = () => {
