@@ -16,6 +16,7 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
     cookieSession({
         maxAge: 5 * 24 * 60 * 60 * 1000,

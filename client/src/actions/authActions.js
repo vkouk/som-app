@@ -6,10 +6,10 @@ import {
     UNAUTH_USER,
     AUTH_ERROR
 } from './types';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Platform } from 'react-native';
 import axios from 'axios';
 
-const ROOT_URL = 'https://som-app-server.herokuapp.com';
+const ROOT_URL = 'http://127.0.0.1:5000';
 
 export const emailChanged = text => {
     return {
@@ -27,7 +27,7 @@ export const passwordChanged = text => {
 
 export const fetchUser = () => async dispatch => {
     const token = await AsyncStorage.getItem('token');
-    const { data } = await axios.get(`${ROOT_URL}/api/current_user`, { headers: { "Authorization" : token  } } );
+    const { data } = await axios.get(`${ROOT_URL}/api/current_user`, { headers: { "Authorization" : token } } );
 
     dispatch({
         type: FETCH_USER,
@@ -40,8 +40,9 @@ export const loginUser = ({email, password}) => async dispatch => {
         .then(response => {
             dispatch({ type: AUTH_USER });
             AsyncStorage.setItem('token', response.data.token);
+            this.props.navigation.navigate('home');
         })
-        .catch((error) => dispatch(authError(error.response.data.error)));
+        .catch(() => dispatch(authError('login error')));
 };
 
 export const registerUser = ({email, password}) => async dispatch => {
@@ -49,7 +50,7 @@ export const registerUser = ({email, password}) => async dispatch => {
         .then(() => {
             dispatch({ type: AUTH_USER });
         })
-        .catch((error) => dispatch(authError(error.response.data.error)));
+         .catch(() => dispatch(authError('register error')));
 };
 
 export const logoutUser = () => {
