@@ -4,5 +4,5 @@ import supplyReducer from './supplyReducer';
 
 export default combineReducers({
     auth: authReducer,
-    supply: supplyReducer
+    supplies: supplyReducer
 });

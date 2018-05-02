@@ -10,7 +10,6 @@ module.exports = app => {
 
     app.post('/api/supplies', async(req, res) => {
         const { _id, stock } = req.body;
-        console.log(_id, stock, req.user);
 
         const supply = Supply.findOneAndUpdate(
             {
@@ -18,7 +17,7 @@ module.exports = app => {
             },
             {
                 $inc: { stock: -stock  },
-                $set: { _buyer: /*mongoose.Types.ObjectId('5a92f0d9e1d99b04d6089442')*/ req.user._id },
+                $set: { _buyer: mongoose.Types.ObjectId('5a92f0d9e1d99b04d6089442') },
                 dateBought: new Date()
             }
         ).exec((err, doc) => {

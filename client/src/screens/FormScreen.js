@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { Form, Item, Input, Label, Icon, Button, Text, Picker } from 'native-base';
+import { Form, Icon, Button, Text, Picker, Item, Input, Label } from 'native-base';
+import { fetchSupplies, submitSupply } from "../actions";
 
 class FormScreen extends Component {
     static navigationOptions = {
@@ -11,33 +12,85 @@ class FormScreen extends Component {
     };
 
     state = {
-        selected: undefined
+        selected: null,
+        stock: null,
+        error: '',
+        success: ''
     };
 
-    renderFields = () => {
-        return (
-            <Picker
-                mode="dropdown"
-                placeholder="Select One"
-                iosIcon={<Icon name="ios-arrow-down-outline" />}
-                placeholder="Select your supply"
-                textStyle={{ color: "#5cb85c" }}
-                itemStyle={{
-                    backgroundColor: "#d3d3d3",
-                    marginLeft: 0,
-                    paddingLeft: 10
-                }}
-                itemTextStyle={{ color: '#788ad2' }}
-                style={{ width: undefined }}
-                selectedValue={this.state.selected}
-                onValueChange={e => event.target.value}
-            >
-                <Picker.Item label="Wallet" value="key0" />
-                <Picker.Item label="ATM Card" value="key1" />
-                <Picker.Item label="Debit Card" value="key2" />
-                <Picker.Item label="Credit Card" value="key3" />
-                <Picker.Item label="Net Banking" value="key4" />
-            </Picker>
+    componentDidMount() {
+        this.props.fetchSupplies();
+    }
+
+    onSupplyChange = value => {
+        this.setState({ selected: value });
+    };
+
+    onStockChange = value => {
+        const regex = /^[0-9\b]+$/;
+
+        if (regex.test(value) || value === '') {
+            this.setState({ stock: value , error: '' });
+        } else {
+            this.setState({ error: 'Stock amount must be digit only.', stock: '' });
+        }
+    };
+
+    onBuyButtonPress = () => {
+        const { stock, selected, error } = this.state;
+
+        if (stock === null) {
+            this.setState({ error: "Stock can't be blank.", success: "" });
+        } else {
+            this.setState({ error: "", success: "" });
+        }
+
+        this.props.submitSupply({ stock, _id: selected });
+        if (error === '') {
+            this.setState({
+                success: 'Thanks for buying.'
+            });
+        }
+    };
+
+    renderSupplies = () => {
+        const filteredSupplies = this.props.supplies.filter(supply => supply.stock > 0 && this.state.stock <= supply.stock);
+
+        return(
+            <View>
+                <Picker
+                    mode="dropdown"
+                    placeholder="Select One"
+                    iosIcon={<Icon name="ios-arrow-down-outline" />}
+                    placeholder="Select your supply"
+                    textStyle={{ color: "#000" }}
+                    itemStyle={{
+                        marginLeft: 0,
+                        paddingLeft: 10
+                    }}
+                    itemTextStyle={{ color: '#788ad2' }}
+                    selectedValue={this.state.selected}
+                    onValueChange={this.onSupplyChange}
+                >
+                    {
+                        filteredSupplies.map(supply => {
+                            return(
+                                <Picker.Item key={supply._id} label={`${supply.title} - ${supply.stock} Stock Left`} value={supply._id} />
+                            );
+                        })
+                    }
+                </Picker>
+                <Item inlineLabel>
+                    <Label>Stock Amount:</Label>
+                    <Input
+                        required
+                        type="number"
+                        value={this.state.stock}
+                        onChangeText={this.onStockChange}
+                        style={{color: '#000'}}
+                    />
+                </Item>
+            </View>
         );
     };
 
@@ -45,11 +98,15 @@ class FormScreen extends Component {
         return (
             <View>
                 <Form style={styles.formWrapper}>
-                    {this.renderFields()}
+                    {this.renderSupplies()}
                 </Form>
 
+                <Text style={styles.successStyle}>
+                    {this.state.success}
+                </Text>
+
                 <Text style={styles.errorStyle}>
-                    {this.props.error}
+                    {this.state.error}
                 </Text>
 
                 <Button
@@ -57,7 +114,7 @@ class FormScreen extends Component {
                     light
                     style={styles.btnStyle}
                     action="submit"
-                    onPress={this.onRegisterButtonPress}
+                    onPress={this.onBuyButtonPress}
                 >
                     <Text>Buy!</Text>
                 </Button>
@@ -88,22 +145,26 @@ const styles = StyleSheet.create({
     btnStyle: {
         marginLeft: 10
     },
+    icon: {
+        width: 26,
+        height: 26
+    },
     errorStyle: {
         fontSize: 20,
         alignSelf: 'center',
         color: 'red',
         marginBottom: 20
     },
-    icon: {
-        width: 26,
-        height: 26
+    successStyle: {
+        fontSize: 20,
+        alignSelf: 'center',
+        color: 'green',
+        marginBottom: 20
     }
 });
 
-const mapStateToProps = ({ auth }) => {
-    const { email, password, error } = auth;
-
-    return { email, password, error };
+const mapStateToProps = ({ supplies }) => {
+    return { supplies };
 };
 
-export default connect(mapStateToProps)(FormScreen);
+export default connect(mapStateToProps, { fetchSupplies, submitSupply })(FormScreen);
