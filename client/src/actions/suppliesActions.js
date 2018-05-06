@@ -12,13 +12,13 @@ if (Platform.OS === 'ios') {
 }
 
 export const fetchSupplies = () => async dispatch => {
-    const { data } =  await axios.get(`${ROOT_URL}/api/supplies`);
+    const { data } =  await axios.get(`${ROOT_URL}/api/supplies`).catch(error => console.log(error.response.data.error));
 
     dispatch({ type: FETCH_SUPPLIES, payload: data });
 };
 
 export const submitSupply = values => async dispatch => {
-    const { data } = await axios.post(`${ROOT_URL}/api/supplies`, values);
+    const { data } = await axios.post(`${ROOT_URL}/api/supplies`, values).catch(error => console.log(error.response.data.error));
 
     dispatch({ type: FETCH_SUPPLIES, payload: data });
 };
