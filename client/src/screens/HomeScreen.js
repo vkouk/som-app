@@ -27,7 +27,7 @@ class WelcomeScreen extends Component {
         return(
             <View style={styles.container}>
                 <Text>Hello There User! Above some basic instructions will be given according to how to use the SOM Application.</Text>
-                <Text style={{ marginTop: 30 }}>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi consequuntur eveniet ex impedit mollitia voluptas voluptates. Ab amet corporis ducimus, incidunt ipsum laborum mollitia nemo, non provident recusandae sunt veniam!</Text>
+                <Text style={{ marginTop: 30 }}>Above you should tap to supplies form which you will redirected to it. Then, there will be a select list in which you should select the one supply you want to buy, with the specific stock amount which should be not more than its individual supply stock. If no error exists and by presing the buy button if message 'Thanks for buying' appears, then everything went well and you should have bought your supply!!</Text>
                 <Button
                     style={styles.btnSubmit}
                     block

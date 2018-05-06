@@ -46,7 +46,7 @@ class FormScreen extends Component {
         }
 
         this.props.submitSupply({ stock, _id: selected });
-        if (error === '') {
+        if (error === '' && stock !== null) {
             this.setState({
                 success: 'Thanks for buying.'
             });
@@ -116,7 +116,7 @@ class FormScreen extends Component {
                     action="submit"
                     onPress={this.onBuyButtonPress}
                 >
-                    <Text>Buy!</Text>
+                    <Text style={{ color: '#fff'}}>Buy!</Text>
                 </Button>
             </View>
         );
@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
         height: 80
     },
     btnStyle: {
-        marginLeft: 10
+        marginLeft: 10,
+        backgroundColor: '#0c627b'
     },
     icon: {
         width: 26,
