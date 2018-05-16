@@ -9,12 +9,12 @@ import {
 import { AsyncStorage, Platform } from 'react-native';
 import axios from 'axios';
 
-let ROOT_URL = '';
-if (Platform.OS === 'ios') {
-    ROOT_URL = 'http://localhost:5000';
-} else {
-    ROOT_URL = 'http://10.0.2.2:5000';
-}
+let ROOT_URL = 'https://som-app-server.herokuapp.com';
+// if (Platform.OS === 'ios') {
+//     ROOT_URL = 'http://localhost:5000';
+// } else {
+//     ROOT_URL = 'http://10.0.2.2:5000';
+// }
 
 export const emailChanged = text => {
     return {
